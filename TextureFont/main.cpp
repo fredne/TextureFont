@@ -47,20 +47,6 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
     gEngine.gfx.LoadVertexShader(&fontShader, L"font_vs", ied, ARRAYSIZE(ied));
     gEngine.gfx.LoadPixelShader(&fontShader, L"font_ps");
 
-    //float width = 626;
-    //float height = 313;
-    //float startX = 134.f;
-    //float startY = 30.f;
-    //float offsetX = 32.f;
-    //float offsetY = 64.f;
-    //float strideX = 27.f;
-    //int idx = 1;
-    //Rect p = { };
-    //p.left = (startX + (strideX + offsetX)*idx ) / width;
-    //p.top = (startY) / height;
-    //p.width = offsetX / width;
-    //p.height = offsetY / height;
-
     std::vector<Vertex> vQuad;
     vQuad.push_back({ {-0.5f,  0.5f, 0.0f}, {0, 0} }); // 좌상
     vQuad.push_back({ { 0.5f,  0.5f, 0.0f}, {1, 0} }); // 우상
@@ -70,26 +56,7 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
     vQuad.push_back({ {-0.5f, -0.5f, 0.0f}, {0, 1} }); // 좌하
     vQuad.push_back({ { 0.5f,  0.5f, 0.0f}, {1, 0} }); // 우상
 
-    //vQuad.push_back({ { 1.f,  1.5f, 0.0f}, {0, 0} }); // 좌상
-    //vQuad.push_back({ { 1.5f,  1.5f, 0.0f}, {1, 0} }); // 우상
-    //vQuad.push_back({ { 1.f,  1.f, 0.0f}, {0, 1} }); // 좌하
-
-    //vQuad.push_back({ { 1.5f,  1.f, 0.0f}, {1, 1} }); // 우하
-    //vQuad.push_back({ { 1.f,  1.f, 0.0f}, {0, 1} }); // 좌하
-    //vQuad.push_back({ { 1.5f,  1.5f, 0.0f}, {1, 0} }); // 우상
-
-    //float right = p.left + p.width;
-    //float bottom = p.top + p.height;
-    //std::vector<Vertex> vQuad;
-    //vQuad.push_back({ {-0.5f,  0.5f, 0.0f}, {p.left, p.top} }); // 좌상
-    //vQuad.push_back({ { 0.5f,  0.5f, 0.0f}, {right, p.top} }); // 우상
-    //vQuad.push_back({ {-0.5f, -0.5f, 0.0f}, {p.left, bottom} }); // 좌하
-
-    //vQuad.push_back({ { 0.5f, -0.5f, 0.0f}, {right, bottom} }); // 우하
-    //vQuad.push_back({ {-0.5f, -0.5f, 0.0f}, {p.left, bottom} }); // 좌하
-    //vQuad.push_back({ { 0.5f,  0.5f, 0.0f}, {right, p.top} }); // 우상
-
-        // 텍스처 로드 및 생성
+    // 텍스처 로드 및 생성
     Texture* tex = new Texture();
     tex->Load(gEngine.gfx.Device, L"digital-numbers.png");
     tex->CreateSampler(gEngine.gfx.Device);
@@ -99,23 +66,26 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
     texMat->SetShaderSet(&texShaders);
     texMat->AddTexture(tex);
 
-    Material* fontMat = new Material();
-    fontMat->SetShaderSet(&fontShader);
-    fontMat->AddTexture(tex);
-
     // 메쉬생성
     Mesh* quadMesh = new Mesh();
     quadMesh->Create(&gEngine.gfx, vQuad);    
 
+    // Font
+    // 텍스트에 사용할 머티리얼
+    Material* fontMat = new Material();
+    fontMat->SetShaderSet(&fontShader);
+    fontMat->AddTexture(tex);
+
+    // 폰트 메쉬
     Font::font = new Font();
     Mesh* font = Font::font;
     font->Create(&gEngine.gfx, vQuad);
         
     //게임오브젝트 생성
     GameObject* obj = new GameObject(-0.5f, 0.5f, 0);
-   
     obj->scale.x = 0.1f;
     obj->scale.y = 0.1f;
+    // 폰트 렌더러 추가
     obj->AddComponent(new MeshRenderer(font, fontMat));
     //obj->AddComponent(new PlayerController());
     gEngine.world.push_back(obj);

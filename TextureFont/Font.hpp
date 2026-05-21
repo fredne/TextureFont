@@ -47,6 +47,7 @@ public:
 
     void Input()
     {
+        // S 입력시 텍스트 입력 받기
         if (GetAsyncKeyState('S') & 0x0001)
         {
             std::wstring str;
@@ -56,10 +57,10 @@ public:
 
             for (const wchar_t& c : str)
             {
-                int idx = -1;
+                // 일단 숫자일 경우에만 텍스트 추가
                 if (std::iswdigit(c))
                 {
-                    idx = c - L'0';
+                    int idx = c - L'0';
 
                     Rect r = { };
                     r.left = (startX + (strideX + offsetX) * idx) / width;
@@ -73,9 +74,12 @@ public:
             }
         }
 
+
+        //Backspace 입력시 지우기
         if (GetAsyncKeyState(VK_BACK) & 0x0001)
         {
-            textList.pop_back();
+            if(!textList.empty())
+                textList.pop_back();
         }
 
         if (GetAsyncKeyState('Q') & 0x0001)
@@ -87,6 +91,7 @@ public:
         if (!vBuffer) return;
 
 
+        // 새 정점 데이터 생성
         std::vector<Vertex> vQuad;
         for (int i = 0; i < textList.size(); ++i)
         {
@@ -109,6 +114,7 @@ public:
 
         }
 
+        // 정점 데이터 업데이트
         D3D11_MAPPED_SUBRESOURCE mappedResource;
         ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
