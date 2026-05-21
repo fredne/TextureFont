@@ -72,7 +72,7 @@ public:
 
         if (isFile)
         {
-            // VS ÄÄÆÄÀÏ
+            // VS ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             hr = D3DCompileFromFile((LPCWSTR)source, nullptr, nullptr, "VS", "vs_5_0", 0, 0, &vsBlob, &errBlob);
             if (FAILED(hr))
             {
@@ -81,7 +81,7 @@ public:
                 return res;
             }
 
-            // PS ÄÄÆÄÀÏ
+            // PS ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             hr = D3DCompileFromFile((LPCWSTR)source, nullptr, nullptr, "PS", "ps_5_0", 0, 0, &psBlob, &errBlob);
             if (FAILED(hr))
             {
@@ -92,7 +92,7 @@ public:
         }
         else
         {
-            // ¸Þ¸ð¸® ¼Ò½º VS ÄÄÆÄÀÏ
+            // ï¿½Þ¸ï¿½ ï¿½Ò½ï¿½ VS ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             hr = D3DCompile(source, length, nullptr, nullptr, nullptr, "VS", "vs_5_0", 0, 0, &vsBlob, &errBlob);
             if (FAILED(hr))
             {
@@ -101,7 +101,7 @@ public:
                 return res;
             }
 
-            // ¸Þ¸ð¸® ¼Ò½º PS ÄÄÆÄÀÏ
+            // ï¿½Þ¸ï¿½ ï¿½Ò½ï¿½ PS ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             hr = D3DCompile(source, length, nullptr, nullptr, nullptr, "PS", "ps_5_0", 0, 0, &psBlob, &errBlob);
             if (FAILED(hr))
             {
@@ -111,7 +111,7 @@ public:
             }
         }
 
-        // ¸®¼Ò½º »ý¼º
+        // ï¿½ï¿½ï¿½Ò½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Device->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &res.vs);
         Device->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &res.ps);
 
@@ -127,15 +127,15 @@ public:
     }
 
     /**
- * [¼ÎÀÌ´õ ·Îµù Àü·«]
- * 1. .cso ÆÄÀÏ Á¸Àç ¿©ºÎ È®ÀÎ -> ÀÖÀ¸¸é D3DReadFileToBlobÀ¸·Î Áï½Ã ·Îµå (¼º´É ÃÖÀûÈ­)
- * 2. .cso ¾øÀ½ -> .hlsl ÆÄÀÏ È®ÀÎ -> D3DCompileFromFile·Î ½Ç½Ã°£ ºôµå (À¯¿¬¼º)
- * 3. µÑ ´Ù ¾øÀ½ -> ¿¡·¯ ¸Þ½ÃÁö Ãâ·Â ÈÄ ºó ±¸Á¶Ã¼ ¹ÝÈ¯
+ * [ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½]
+ * 1. .cso ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ D3DReadFileToBlobï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Îµï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­)
+ * 2. .cso ï¿½ï¿½ï¿½ï¿½ -> .hlsl ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ -> D3DCompileFromFileï¿½ï¿½ ï¿½Ç½Ã°ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+ * 3. ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½È¯
  */
  /**
-* [Vertex Shader Àü¿ë ·Î´õ]
-* - CSO ¿ì¼± ½Ãµµ ÈÄ HLSL ÄÄÆÄÀÏ
-* - Input Layout »ý¼º Æ÷ÇÔ
+* [Vertex Shader ï¿½ï¿½ï¿½ï¿½ ï¿½Î´ï¿½]
+* - CSO ï¿½ì¼± ï¿½Ãµï¿½ ï¿½ï¿½ HLSL ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+* - Input Layout ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 */
     void LoadVertexShader(ShaderSet* res, const std::wstring& shaderName, D3D11_INPUT_ELEMENT_DESC* ied, UINT iedCount)
     {
@@ -146,10 +146,10 @@ public:
         std::wstring csoPath = shaderName + L".cso";
         std::wstring hlslPath = shaderName + L".hlsl";
 
-        // 1. CSO ½Ãµµ
+        // 1. CSO ï¿½Ãµï¿½
         HRESULT hr = D3DReadFileToBlob(csoPath.c_str(), &vsBlob);
 
-        // 2. ½ÇÆÐ ½Ã HLSL ÄÄÆÄÀÏ ½Ãµµ
+        // 2. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ HLSL ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ãµï¿½
         if (FAILED(hr))
         {
             hr = D3DCompileFromFile(hlslPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
@@ -161,7 +161,7 @@ public:
             }
         }
 
-        // 3. ¸®¼Ò½º ¹× ·¹ÀÌ¾Æ¿ô »ý¼º
+        // 3. ï¿½ï¿½ï¿½Ò½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾Æ¿ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (vsBlob)
         {
             Device->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &res->vs);
@@ -175,8 +175,8 @@ public:
     }
 
     /**
- * [Pixel Shader Àü¿ë ·Î´õ]
- * - CSO ¿ì¼± ½Ãµµ ÈÄ HLSL ÄÄÆÄÀÏ
+ * [Pixel Shader ï¿½ï¿½ï¿½ï¿½ ï¿½Î´ï¿½]
+ * - CSO ï¿½ì¼± ï¿½Ãµï¿½ ï¿½ï¿½ HLSL ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
     void LoadPixelShader(ShaderSet* res, const std::wstring& shaderName)
     {
@@ -187,10 +187,10 @@ public:
         std::wstring csoPath = shaderName + L".cso";
         std::wstring hlslPath = shaderName + L".hlsl";
 
-        // 1. CSO ½Ãµµ
+        // 1. CSO ï¿½Ãµï¿½
         HRESULT hr = D3DReadFileToBlob(csoPath.c_str(), &psBlob);
 
-        // 2. ½ÇÆÐ ½Ã HLSL ÄÄÆÄÀÏ ½Ãµµ
+        // 2. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ HLSL ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ãµï¿½
         if (FAILED(hr))
         {
             hr = D3DCompileFromFile(hlslPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
@@ -202,7 +202,7 @@ public:
             }
         }
 
-        // 3. ¸®¼Ò½º »ý¼º
+        // 3. ï¿½ï¿½ï¿½Ò½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (psBlob)
         {
             Device->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &res->ps);
@@ -210,7 +210,7 @@ public:
         }
     }
 
-    // ¿¡·¯ Ã³¸®¸¦ À§ÇÑ ÇïÆÛ ÇÔ¼ö
+    // ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     void HandleCompileError(HRESULT hr, ID3DBlob* errBlob, const wchar_t* path) 
     {
         if (errBlob) 
@@ -221,7 +221,7 @@ public:
         }
         else if (hr == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND)) 
         {
-            std::wstring msg = L"ÆÄÀÏÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù: " + std::wstring(path);
+            std::wstring msg = L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½: " + std::wstring(path);
             MessageBoxW(NULL, msg.c_str(), L"File Error", MB_ICONERROR);
         }
     }

@@ -6,16 +6,25 @@
 #include "Font.hpp"
 
 class GameLoop {
+private:
+    GameLoop() {
+        printf("[Engine] GameLoop Created.\n");
+    }
+    GameLoop(const GameLoop&) = delete;
+    GameLoop(GameLoop&&) = delete;
+
 public:
+    static GameLoop& Get()
+    {
+        static GameLoop instance;
+        return instance;
+    }
+
     WindowContext win;
     GraphicsContext gfx;
     DeltaTime timer;
     std::vector<GameObject*> world;
     bool isRunning = true;
-
-    GameLoop() {
-        printf("[Engine] GameLoop Created.\n");
-    }
 
     ~GameLoop() {
         for (auto obj : world) delete obj;
@@ -24,21 +33,21 @@ public:
     }
 
     void Initialize(HINSTANCE hInst, LRESULT(CALLBACK* wndProc)(HWND, UINT, WPARAM, LPARAM)) {
-        win.Initialize(hInst, 600, 600, wndProc);
-        gfx.InitDX(win.hWnd, 600, 600);
+        win.Initialize(hInst, 800, 800, wndProc);
+        gfx.InitDX(win.hWnd, 800, 800);
     }
 
     void Input() {
         if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) isRunning = false;
 
-        // Ã¢ Å©±â Á¶Àý Åä±Û ¿¹½Ã (CÅ°)
-        if (GetAsyncKeyState('C') & 0x0001) {
-            win.Width = 600; win.Height = 600;
-            RECT rc = { 0, 0, win.Width, win.Height };
-            AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-            SetWindowPos(win.hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER);
-            gfx.Resize(win.Width, win.Height);
-        }
+        // Ã¢ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (CÅ°)
+        //if (GetAsyncKeyState('C') & 0x0001) {
+        //    win.Width = 600; win.Height = 600;
+        //    RECT rc = { 0, 0, win.Width, win.Height };
+        //    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+        //    SetWindowPos(win.hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER);
+        //    gfx.Resize(win.Width, win.Height);
+        //}
 
         for (auto obj : world) obj->Input();
     }
@@ -71,8 +80,8 @@ public:
             }
             else {
                 Input();
-                Font::font->Input();
-                Font::font->UpdateMesh(&gfx);
+                Font::font->Input(&gfx);
+                //Font::font->UpdateMesh(&gfx);
                 Update();
                 Render();
             }

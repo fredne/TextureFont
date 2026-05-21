@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cwctype>
 
-struct Rect
+struct Text
 {
     float left;
     float top;
@@ -13,24 +13,47 @@ struct Rect
     int number;
 };
 
+struct FontSetting
+{
+    static float totalWidth;
+    static float totalHeight;
+    float startX;
+    float startY;
+    float width;
+    float height; 
+    float strideX; 
+};
+
+float FontSetting::totalWidth = 0;
+float FontSetting::totalHeight = 0;
+
+
 class Font : public Mesh
 {
 public:
     static Font* font;
 
-    int idx = 0;
-    float totalWidth = 626;
-    float totalHeight = 313;
-    float startX = 22.f;
-    float startY = 31.f;
-    float width = 38.f;
-    float height = 64.f;
-    float strideX = 22.f;
+    FontSetting numberSetting;
+    FontSetting alphabetSetting;
 
-    std::vector<Rect> textList;
+    std::vector<Text> textList;
 
     void Create(GraphicsContext* gfx, const std::vector<Vertex>& vertices) override
     {
+        FontSetting::totalWidth = 1584.f;
+        FontSetting::totalHeight = 730.f;
+
+        numberSetting.startX = 22.f;
+        numberSetting.startY = 405.f;
+        numberSetting.width = 38.f;
+        numberSetting.height = 64.f;
+        numberSetting.strideX = 22.f;
+
+        alphabetSetting.startX = 5.f;
+        alphabetSetting.startY = 8.f;
+        alphabetSetting.width = 45.f;
+        alphabetSetting.height = 88.f;
+        alphabetSetting.strideX = 16.f;
 
         vertexCount = (UINT)vertices.size();
 
@@ -44,91 +67,115 @@ public:
         sd.pSysMem = vertices.data();
 
         gfx->Device->CreateBuffer(&bd, &sd, &vBuffer);
+
+        UpdateMesh(gfx);
     }
 
-    void Input()
+    void Input(GraphicsContext* gfx)
     {
-        // S ÀÔ·Â½Ã ÅØ½ºÆ® ÀÔ·Â ¹Þ±â
-        if (GetAsyncKeyState('S') & 0x0001)
+        // S ï¿½Ô·Â½ï¿½ ï¿½Ø½ï¿½Æ® ï¿½Ô·ï¿½ ï¿½Þ±ï¿½
+        if (GetAsyncKeyState(VK_TAB) & 0x0001)
         {
             std::wstring str;
-            std::wcout << "ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä: ";
+            std::wcout << "Enter your name: ";
             std::wcin >> str;
             std::wcout << str << std::endl;
 
             for (const wchar_t& c : str)
             {
-                // ÀÏ´Ü ¼ýÀÚÀÏ °æ¿ì¿¡¸¸ ÅØ½ºÆ® Ãß°¡
-                if (std::iswdigit(c))
-                {
-                    int idx = c - L'0';
-
-                    Rect r = { };
-                    r.left = (startX + (strideX + width) * idx) / totalWidth;
-                    r.top = (startY) / totalHeight;
-                    r.width = width / totalWidth;
-                    r.height = height / totalHeight;
-
-                    textList.push_back(r);
-
-                }
-                else if (std::iswalpha(c))
-                {
-                    int idx = c - L'a';
-
-                    Rect r = { };
-                    r.left = (startX + (strideX + width) * idx) / totalWidth;
-                    r.top = (startY) / totalHeight;
-                    r.width = width / totalWidth;
-                    r.height = height / totalHeight;
-                    r.number = idx;
-
-                    textList.push_back(r);
-                }
+                InputText(c);
             }
+
+            UpdateMesh(gfx);
         }
 
 
-        //Backspace ÀÔ·Â½Ã Áö¿ì±â
+        //Backspace ï¿½Ô·Â½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
         if (GetAsyncKeyState(VK_BACK) & 0x0001)
         {
-            if(!textList.empty())
+            if (!textList.empty())
+            {
                 textList.pop_back();
+                UpdateMesh(gfx);
+            }
+
         }
 
-        if (GetAsyncKeyState('Q') & 0x0001)
-            idx = (idx + 1) % 10;
+    }
+
+    void InputText(const wchar_t& key)
+    {
+        Text r = { };
+        // ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½Ø½ï¿½Æ® ï¿½ß°ï¿½
+        if (std::iswdigit(key))
+        {
+            int idx = key - L'0';
+
+            FontSetting& fs = numberSetting;
+            r.left = (fs.startX + (fs.strideX + fs.width) * idx) / fs.totalWidth;
+            r.top = (fs.startY) / fs.totalHeight;
+            r.width = fs.width / fs.totalWidth;
+            r.height = fs.height / fs.totalHeight;
+            r.number = idx;
+
+            textList.push_back(r);
+
+        }
+        else if (std::iswalpha(key))
+        {
+            int idx = std::towlower(key) - L'a';
+
+            FontSetting& fs = alphabetSetting;
+            r.left = (fs.startX + (fs.strideX + fs.width) * idx) / fs.totalWidth;
+            r.top = (fs.startY) / fs.totalHeight;
+            r.width = fs.width / fs.totalWidth;
+            r.height = fs.height / fs.totalHeight;
+            r.number = idx;
+
+            textList.push_back(r);
+        }
+        else if (key == L' ')
+        {
+            textList.push_back(r);
+        }
+
+    }
+
+    void InputTextAndUpdateMesh(const wchar_t& key, GraphicsContext* gfx)
+    {
+        InputText(key);
+        UpdateMesh(gfx);
+
     }
 
     void UpdateMesh(GraphicsContext* gfx)
     {
         if (!vBuffer) return;
 
-
-        // »õ Á¤Á¡ µ¥ÀÌÅÍ »ý¼º
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         std::vector<Vertex> vQuad;
         for (int i = 0; i < textList.size(); ++i)
         {
             float vLeft = i;
             float vtop = 1;
             float vRight = vLeft + 1;
-            float vBottom = vtop - 1;
+            float vBottom = vtop - 1.5f;
 
-            const Rect& text = textList[i];
+            const Text& text = textList[i];
             float rRight = text.left + text.width;
             float rBottom = text.top + text.height;
 
-            vQuad.push_back({ { vLeft + 1,  vtop, 0.0f}, {text.left, text.top} }); // ÁÂ»ó
-            vQuad.push_back({ { vRight + 1,  vtop, 0.0f}, {rRight, text.top} }); // ¿ì»ó
-            vQuad.push_back({ { vLeft + 1,  vBottom, 0.0f}, {text.left, rBottom} }); // ÁÂÇÏ
+            vQuad.push_back({ { vLeft + 1,  vtop, 0.0f}, {text.left, text.top} }); // ï¿½Â»ï¿½
+            vQuad.push_back({ { vRight + 1,  vtop, 0.0f}, {rRight, text.top} }); // ï¿½ï¿½ï¿½
+            vQuad.push_back({ { vLeft + 1,  vBottom, 0.0f}, {text.left, rBottom} }); // ï¿½ï¿½ï¿½ï¿½
 
-            vQuad.push_back({ { vRight + 1, vBottom, 0.0f}, {rRight, rBottom} }); // ¿ìÇÏ
-            vQuad.push_back({ { vLeft + 1, vBottom, 0.0f}, {text.left, rBottom} }); // ÁÂÇÏ
-            vQuad.push_back({ { vRight + 1, vtop, 0.0f}, {rRight, text.top} }); // ¿ì»ó
+            vQuad.push_back({ { vRight + 1, vBottom, 0.0f}, {rRight, rBottom} }); // ï¿½ï¿½ï¿½ï¿½
+            vQuad.push_back({ { vLeft + 1, vBottom, 0.0f}, {text.left, rBottom} }); // ï¿½ï¿½ï¿½ï¿½
+            vQuad.push_back({ { vRight + 1, vtop, 0.0f}, {rRight, text.top} }); // ï¿½ï¿½ï¿½
 
         }
 
-        // Á¤Á¡ µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         D3D11_MAPPED_SUBRESOURCE mappedResource;
         ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
