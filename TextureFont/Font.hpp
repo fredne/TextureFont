@@ -10,6 +10,7 @@ struct Rect
     float top;
     float width;
     float height;
+    int number;
 };
 
 class Font : public Mesh
@@ -18,13 +19,13 @@ public:
     static Font* font;
 
     int idx = 0;
-    float width = 626;
-    float height = 313;
-    float startX = 28.f;
+    float totalWidth = 626;
+    float totalHeight = 313;
+    float startX = 22.f;
     float startY = 31.f;
-    float offsetX = 32.f;
-    float offsetY = 64.f;
-    float strideX = 28.f;
+    float width = 38.f;
+    float height = 64.f;
+    float strideX = 22.f;
 
     std::vector<Rect> textList;
 
@@ -63,13 +64,26 @@ public:
                     int idx = c - L'0';
 
                     Rect r = { };
-                    r.left = (startX + (strideX + offsetX) * idx) / width;
-                    r.top = (startY) / height;
-                    r.width = offsetX / width;
-                    r.height = offsetY / height;
+                    r.left = (startX + (strideX + width) * idx) / totalWidth;
+                    r.top = (startY) / totalHeight;
+                    r.width = width / totalWidth;
+                    r.height = height / totalHeight;
 
                     textList.push_back(r);
 
+                }
+                else if (std::iswalpha(c))
+                {
+                    int idx = c - L'a';
+
+                    Rect r = { };
+                    r.left = (startX + (strideX + width) * idx) / totalWidth;
+                    r.top = (startY) / totalHeight;
+                    r.width = width / totalWidth;
+                    r.height = height / totalHeight;
+                    r.number = idx;
+
+                    textList.push_back(r);
                 }
             }
         }

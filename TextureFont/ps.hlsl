@@ -21,7 +21,7 @@
 float4 main(PS_INPUT input) : SV_TARGET
 {
     return tex.Sample(sam, input.uv);
-    
+
     //return float4(1, 1, 1, 1);
     //return colorTint;
 }

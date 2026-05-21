@@ -49,7 +49,8 @@ public:
     }
 
     void Render() {
-        float col[] = { 0.1f, 0.2f, 0.3f, 1.0f };
+        //float col[] = { 0.1f, 0.2f, 0.3f, 1.0f };
+        float col[] = { 0.6f, 0.6f, 0.6f, 1.0f };
         gfx.ImmediateContext->ClearRenderTargetView(gfx.RTV, col);
 
         D3D11_VIEWPORT vp = { 0, 0, (float)win.Width, (float)win.Height, 0, 1 };

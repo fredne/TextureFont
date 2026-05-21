@@ -3,8 +3,6 @@
 //framework.hpp -> texture
 //그외 수정내용 : material, meshrenderer
 
-
-
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #include "GameLoop.hpp"
 #include "MeshRenderer.hpp"

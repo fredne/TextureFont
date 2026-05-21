@@ -20,5 +20,10 @@
 
 float4 main(PS_INPUT input) : SV_TARGET
 {
-    return tex.Sample(sam, input.uv);
+    float4 color = tex.Sample(sam, input.uv);
+    float a = color.r * 0.299 + color.g * 0.587 + color.b * 0.114;
+    if (1 - a <= 0.3)
+        discard;
+    //color = 1 - color;
+    return color ;
 }
