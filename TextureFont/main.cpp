@@ -8,8 +8,10 @@
 #include "MeshRenderer.hpp"
 #include "PlayerControl.hpp"
 
-#include "Font.hpp"
-
+#include "FontMesh.hpp"
+#include "TextComponent.h"
+#include "Font.h"
+#include "TextBoxManager.h"
 
 // -----------------------------------------------------------------------------
 // [������ �޽��� ó����]
@@ -19,7 +21,10 @@ LRESULT CALLBACK GlobalWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
     if (m == WM_CHAR)
     {
         const wchar_t key = static_cast<wchar_t>(w);
-        FontMesh::font->InputTextAndUpdateMesh(key, &GameLoop::Get().gfx);
+        TextComponent* tc = TextBoxManager::Get().focus;
+        if(tc)
+            tc->InputText(key);
+
     }
     return DefWindowProc(h, m, w, l);
 }
@@ -29,7 +34,6 @@ LRESULT CALLBACK GlobalWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
 // -----------------------------------------------------------------------------
 int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS) 
 {
-    // 1. ���� �Ŵ��� �ʱ�ȭ
     GameLoop& gEngine = GameLoop::Get();
     gEngine.Initialize(hI, GlobalWndProc);
    
@@ -39,11 +43,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
     };
 
-    // ���̴� ������ �� ����
     ShaderSet texShaders;
-    // ���ؽ� ���̴��� ���̾ƿ� �ε�
     gEngine.gfx.LoadVertexShader(&texShaders, L"vs", ied, ARRAYSIZE(ied));
-    // �ȼ� ���̴� �ε�
     gEngine.gfx.LoadPixelShader(&texShaders, L"ps");
 
     ShaderSet fontShader;
@@ -59,60 +60,60 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
     vQuad.push_back({ {-0.5f, -0.5f, 0.0f}, {0, 1} }); // ����
     vQuad.push_back({ { 0.5f,  0.5f, 0.0f}, {1, 0} }); // ���
 
-    // �޽�����
+
+    // quadMesh
     Mesh* quadMesh = new Mesh();
     quadMesh->Create(&gEngine.gfx, vQuad);
 
-    // �ؽ�ó �ε� �� ����
+    // Texture
     Texture* tex = new Texture();
-    //tex->Load(gEngine.gfx.Device, L"digital-numbers.png");
     tex->Load(gEngine.gfx.Device, L"textfont.png");
     tex->CreateSampler(gEngine.gfx.Device);
 
-    //�ؽ��� ��Ƽ���� ����
+    // Material
     Material* texMat = new Material();
     texMat->SetShaderSet(&texShaders);
     texMat->AddTexture(tex);
 
     // Font
-    // �ؽ�Ʈ�� ����� ��Ƽ����
+    Font* font = new Font(tex->width, tex->height);
+
     Material* fontMat = new Material();
     fontMat->SetShaderSet(&fontShader);
     fontMat->AddTexture(tex);
 
-    // ��Ʈ �޽�
+    // FontMesh
     FontMesh::font = new FontMesh();
-    Mesh* font = FontMesh::font;
-    font->Create(&gEngine.gfx, vQuad);
-        
-    //���ӿ�����Ʈ ����
+    FontMesh* fontMesh = FontMesh::font;
+    fontMesh->Create(&gEngine.gfx, vQuad);
+
+   // Object
     GameObject* obj = new GameObject(-0.8f, 0.5f, 0);
     obj->scale.x = 0.1f;
     obj->scale.y = 0.1f;
-    // ��Ʈ ������ �߰�
-    obj->AddComponent(new MeshRenderer(font, fontMat));
-    //obj->AddComponent(new PlayerController());
+    obj->AddComponent(new MeshRenderer(fontMesh, fontMat));
+    TextComponent* textComponent = new TextComponent(fontMesh, font);
+    TextBoxManager::Get().focus = textComponent;
+    obj->AddComponent(textComponent);
     gEngine.world.push_back(obj);
 
-    // ���� ���� (���� ����)
     gEngine.Run();
 
-    // ----�ڿ� ����--------------
-    // ��Ƽ���� ����
+
+    // Delete
     delete texMat;
     delete fontMat;
 
-    // ���̴� ��Ʈ ����
     texShaders.Release();
     fontShader.Release();
 
     delete tex;
 
-    // �޽� ����
     delete quadMesh;
+    delete fontMesh;
+
     delete font;
 
-    // gEngine�� �Ҹ��ڿ��� world ���� ��� GameObject�� delete��
     return 0;
 }
 

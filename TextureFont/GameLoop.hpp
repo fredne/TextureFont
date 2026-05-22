@@ -3,7 +3,7 @@
 #include "GraphicsContext.hpp"
 #include "Timer.hpp"
 #include "ObjectBase.hpp"
-#include "Font.hpp"
+#include "FontMesh.hpp"
 
 class GameLoop {
 private:
@@ -80,7 +80,6 @@ public:
             }
             else {
                 Input();
-                FontMesh::font->Input(&gfx);
                 //Font::font->UpdateMesh(&gfx);
                 Update();
                 Render();

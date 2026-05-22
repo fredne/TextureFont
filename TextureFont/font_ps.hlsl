@@ -26,5 +26,5 @@ float4 main(PS_INPUT input) : SV_TARGET
         discard;
     
     //color = 1 - color;
-    return color ;
+    return color;
 }

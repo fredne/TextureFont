@@ -45,15 +45,33 @@
     <ClInclude Include="WindowContext.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Font.hpp">
+    <ClInclude Include="FontMesh.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="TextComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBoxManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FontMesh.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TextBoxManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,13 +80,5 @@
     <FxCompile Include="vs.hlsl" />
     <FxCompile Include="font_ps.hlsl" />
     <FxCompile Include="font_vs.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="digital-numbersT.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="digital-numbers.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
   </ItemGroup>
 </Project>

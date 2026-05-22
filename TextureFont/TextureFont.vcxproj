@@ -123,7 +123,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Font.hpp" />
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="FontMesh.hpp" />
     <ClInclude Include="Framework.hpp" />
     <ClInclude Include="GameLoop.hpp" />
     <ClInclude Include="GraphicsContext.hpp" />
@@ -132,12 +133,17 @@
     <ClInclude Include="MeshRenderer.hpp" />
     <ClInclude Include="ObjectBase.hpp" />
     <ClInclude Include="PlayerControl.hpp" />
+    <ClInclude Include="TextBoxManager.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="WindowContext.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="FontMesh.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TextBoxManager.cpp" />
+    <ClCompile Include="TextComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="font_ps.hlsl">
@@ -152,10 +158,6 @@
     <FxCompile Include="vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="digital-numbers.png" />
-    <Image Include="digital-numbersT.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

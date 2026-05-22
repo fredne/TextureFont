@@ -17,6 +17,26 @@
 
 using namespace DirectX;
 
+struct Text
+{
+    wchar_t text;
+    float left;
+    float top;
+    float width;
+    float height;
+};
+
+struct FontSetting
+{
+    float startX;
+    float startY;
+    float width;
+    float height;
+    float strideX;
+};
+
+
+
 // 1. ���� ������ ����ü
 struct Vertex 
 {
