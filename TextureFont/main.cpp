@@ -19,7 +19,7 @@ LRESULT CALLBACK GlobalWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
     if (m == WM_CHAR)
     {
         const wchar_t key = static_cast<wchar_t>(w);
-        Font::font->InputTextAndUpdateMesh(key, &GameLoop::Get().gfx);
+        FontMesh::font->InputTextAndUpdateMesh(key, &GameLoop::Get().gfx);
     }
     return DefWindowProc(h, m, w, l);
 }
@@ -81,8 +81,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
     fontMat->AddTexture(tex);
 
     // ��Ʈ �޽�
-    Font::font = new Font();
-    Mesh* font = Font::font;
+    FontMesh::font = new FontMesh();
+    Mesh* font = FontMesh::font;
     font->Create(&gEngine.gfx, vQuad);
         
     //���ӿ�����Ʈ ����

@@ -80,7 +80,7 @@ public:
             }
             else {
                 Input();
-                Font::font->Input(&gfx);
+                FontMesh::font->Input(&gfx);
                 //Font::font->UpdateMesh(&gfx);
                 Update();
                 Render();

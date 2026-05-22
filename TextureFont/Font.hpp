@@ -28,10 +28,10 @@ float FontSetting::totalWidth = 0;
 float FontSetting::totalHeight = 0;
 
 
-class Font : public Mesh
+class FontMesh : public Mesh
 {
 public:
-    static Font* font;
+    static FontMesh* font;
 
     FontSetting numberSetting;
     FontSetting alphabetSetting;
@@ -41,10 +41,10 @@ public:
     void Create(GraphicsContext* gfx, const std::vector<Vertex>& vertices) override
     {
         FontSetting::totalWidth = 1584.f;
-        FontSetting::totalHeight = 730.f;
+        FontSetting::totalHeight = 204.f;
 
-        numberSetting.startX = 22.f;
-        numberSetting.startY = 405.f;
+        numberSetting.startX = 21.f;
+        numberSetting.startY = 112.f;
         numberSetting.width = 38.f;
         numberSetting.height = 64.f;
         numberSetting.strideX = 22.f;
@@ -193,4 +193,4 @@ public:
 
 };
 
-Font* Font::font = nullptr;
+FontMesh* FontMesh::font = nullptr;
