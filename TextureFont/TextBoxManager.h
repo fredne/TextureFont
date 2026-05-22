@@ -1,6 +1,6 @@
 #pragma once
 
-class TextComponent;
+class TextRenderer;
 
 class TextBoxManager
 {
@@ -11,7 +11,7 @@ public:
 		return instance;
 	}
 
-	TextComponent* focus;
+	TextRenderer* focus;
 
 };
 

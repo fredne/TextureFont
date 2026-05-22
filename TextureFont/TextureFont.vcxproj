@@ -134,7 +134,7 @@
     <ClInclude Include="ObjectBase.hpp" />
     <ClInclude Include="PlayerControl.hpp" />
     <ClInclude Include="TextBoxManager.h" />
-    <ClInclude Include="TextComponent.h" />
+    <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="WindowContext.hpp" />
   </ItemGroup>
@@ -143,7 +143,7 @@
     <ClCompile Include="FontMesh.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextBoxManager.cpp" />
-    <ClCompile Include="TextComponent.cpp" />
+    <ClCompile Include="TextRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="font_ps.hlsl">

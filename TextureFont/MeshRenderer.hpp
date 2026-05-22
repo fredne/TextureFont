@@ -12,7 +12,7 @@ public:
 
     MeshRenderer(Mesh* mesh, Material* mat) : pMeshData(mesh), pMaterial(mat) {}
 
-    ~MeshRenderer() 
+    virtual ~MeshRenderer() 
     {
         if (cBuffer) cBuffer->Release();
     }
@@ -32,7 +32,7 @@ public:
 
         pMaterial->Bind(gfx->ImmediateContext);
 
-        // 3. ¿ùµåÇà·Ä b0½½·Ô¿¡ ¹ÙÀÎµù
+        // 3. ì›”ë“œí–‰ë ¬ b0ìŠ¬ë¡¯ì— ë°”ì¸ë”©
         XMMATRIX world = XMMatrixScaling(pOwner->scale.x, pOwner->scale.y, 1.0f) *
             XMMatrixRotationZ(pOwner->rot.z) * XMMatrixTranslation(pOwner->pos.x, pOwner->pos.y, 0.0f);
 

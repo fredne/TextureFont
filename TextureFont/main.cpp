@@ -9,7 +9,7 @@
 #include "PlayerControl.hpp"
 
 #include "FontMesh.hpp"
-#include "TextComponent.h"
+#include "TextRenderer.h"
 #include "Font.h"
 #include "TextBoxManager.h"
 
@@ -21,7 +21,7 @@ LRESULT CALLBACK GlobalWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
     if (m == WM_CHAR)
     {
         const wchar_t key = static_cast<wchar_t>(w);
-        TextComponent* tc = TextBoxManager::Get().focus;
+        TextRenderer* tc = TextBoxManager::Get().focus;
         if(tc)
             tc->InputText(key);
 
@@ -91,11 +91,18 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
     GameObject* obj = new GameObject(-0.8f, 0.5f, 0);
     obj->scale.x = 0.1f;
     obj->scale.y = 0.1f;
-    obj->AddComponent(new MeshRenderer(fontMesh, fontMat));
-    TextComponent* textComponent = new TextComponent(fontMesh, font);
-    TextBoxManager::Get().focus = textComponent;
-    obj->AddComponent(textComponent);
+    TextRenderer* textRenderer = new TextRenderer(fontMesh, fontMat, font);
+    TextBoxManager::Get().focus = textRenderer;
+    obj->AddComponent(textRenderer);
     gEngine.world.push_back(obj);
+
+    //GameObject* obj2 = new GameObject(-0.8f, 0.0f, 0);
+    //obj2->scale.x = 0.1f;
+    //obj2->scale.y = 0.1f;
+    //TextRenderer* textRenderer2 = new TextRenderer(fontMesh, fontMat, font);
+    //TextBoxManager::Get().focus = textRenderer2;
+    //obj2->AddComponent(textRenderer2);
+    //gEngine.world.push_back(obj2);
 
     gEngine.Run();
 

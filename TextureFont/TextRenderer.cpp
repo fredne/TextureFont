@@ -1,17 +1,20 @@
 #include "Framework.hpp"
-#include "TextComponent.h"
+#include "TextRenderer.h"
 #include "FontMesh.hpp"
 #include <iostream>
 #include "Font.h"
-#include "MeshRenderer.hpp"
 
-TextComponent::TextComponent(FontMesh* fontMesh, Font* font) :
+TextRenderer::TextRenderer(FontMesh* fontMesh, Material* mat, Font* font) : 
+    MeshRenderer(fontMesh, mat),
     fontMesh(fontMesh), shouldUpdate(false), font(font)
 {
+
 }
 
-void TextComponent::Start(GraphicsContext* gfx)
+
+void TextRenderer::Start(GraphicsContext* gfx)
 {
+    MeshRenderer::Start(gfx);
     std::wstring s = L"hi owo";
     for (auto c : s)
     {
@@ -21,7 +24,7 @@ void TextComponent::Start(GraphicsContext* gfx)
     fontMesh->UpdateMesh(gfx, textList);
 }
 
-void TextComponent::Input()
+void TextRenderer::Input()
 {
     if (GetAsyncKeyState(VK_LEFT) & 0x0001)
     {
@@ -103,10 +106,10 @@ void TextComponent::Input()
 
 }
 
-void TextComponent::InputText(const wchar_t& c)
+void TextRenderer::InputText(const wchar_t& c)
 {
     Text text = font->GetText(c);
-    if (text.text != std::wstring::npos && text.text != VK_BACK)
+    if (text.text != static_cast<wchar_t>(std::string::npos) && text.text != VK_BACK)
     {
         textList.push_back(text);
         shouldUpdate = true;
@@ -115,17 +118,19 @@ void TextComponent::InputText(const wchar_t& c)
 }
 
 
-void TextComponent::Update(float dt)
+void TextRenderer::Update(float dt)
 {
 
 }
 
-void TextComponent::Render(GraphicsContext* gfx)
+void TextRenderer::Render(GraphicsContext* gfx)
 {
     if (shouldUpdate)
     {
         fontMesh->UpdateMesh(gfx, textList);
         shouldUpdate = false;
     }
+
+    MeshRenderer::Render(gfx);
 
 }

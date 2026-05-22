@@ -1,10 +1,11 @@
 #pragma once
 #include "ObjectBase.hpp"
+#include "MeshRenderer.hpp"	
 
 class Font;
 class FontMesh;
 
-class TextComponent : public Component
+class TextRenderer : public MeshRenderer
 {
 private:
 	Font* font;
@@ -14,7 +15,7 @@ private:
 
 public:
 
-	TextComponent(FontMesh* fontMesh, Font* font);
+	TextRenderer(FontMesh* fontMesh, Material* fontMat, Font* font);
 
 	// Component을(를) 통해 상속됨
 	void Start(GraphicsContext* gfx) override;
@@ -23,8 +24,6 @@ public:
 	void Render(GraphicsContext* gfx) override;
 
 	void InputText(const wchar_t& key);
-
-	void InputTextAndUpdateMesh(const wchar_t& key, GraphicsContext* gfx);
 
 
 };
