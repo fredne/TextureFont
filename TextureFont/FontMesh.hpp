@@ -22,7 +22,6 @@ public:
 
         gfx->Device->CreateBuffer(&bd, &sd, &vBuffer);
 
-
     }
 
     void UpdateMesh(GraphicsContext* gfx, const std::vector<Text>& textList)
@@ -31,7 +30,7 @@ public:
 
         // 문자 리스트에 따라 사각형 생성
         std::vector<Vertex> vQuad;
-        for (int i = 0; i < textList.size(); ++i)
+        for (uint32_t i = 0; i < (uint32_t)textList.size(); ++i)
         {
             float vLeft = i;
             float vtop = 1;
@@ -42,13 +41,13 @@ public:
             float rRight = text.left + text.width;
             float rBottom = text.top + text.height;
 
-            vQuad.push_back({ { vLeft + 1,  vtop, 0.0f}, {text.left, text.top} }); // �»�
-            vQuad.push_back({ { vRight + 1,  vtop, 0.0f}, {rRight, text.top} }); // ���
-            vQuad.push_back({ { vLeft + 1,  vBottom, 0.0f}, {text.left, rBottom} }); // ����
+            vQuad.push_back({ { vLeft,  vtop, 0.0f}, {text.left, text.top} }); // �»�
+            vQuad.push_back({ { vRight,  vtop, 0.0f}, {rRight, text.top} }); // ���
+            vQuad.push_back({ { vLeft,  vBottom, 0.0f}, {text.left, rBottom} }); // ����
 
-            vQuad.push_back({ { vRight + 1, vBottom, 0.0f}, {rRight, rBottom} }); // ����
-            vQuad.push_back({ { vLeft + 1, vBottom, 0.0f}, {text.left, rBottom} }); // ����
-            vQuad.push_back({ { vRight + 1, vtop, 0.0f}, {rRight, text.top} }); // ���
+            vQuad.push_back({ { vRight, vBottom, 0.0f}, {rRight, rBottom} }); // ����
+            vQuad.push_back({ { vLeft, vBottom, 0.0f}, {text.left, rBottom} }); // ����
+            vQuad.push_back({ { vRight, vtop, 0.0f}, {rRight, text.top} }); // ���
 
         }
 

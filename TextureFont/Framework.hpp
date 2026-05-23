@@ -36,7 +36,6 @@ struct FontSetting
 };
 
 
-
 // 1. ���� ������ ����ü
 struct Vertex 
 {
