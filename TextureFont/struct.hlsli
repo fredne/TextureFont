@@ -1,12 +1,12 @@
 Texture2D tex : register(t0);
 SamplerState sam : register(s0);
 
-// ©Ы╣Е гЮ╥дю╩ b0╥н юл╣©
+// О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ b0О©╫О©╫ О©╫л╣О©╫
 cbuffer WorldBuffer : register(b0)
 {
     matrix matWorld;
 };
-// ╦сф╪╦╝╬С ╣╔юлем (b1╨нем ╫цюш)
+// О©╫О©╫ф╪О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ (b1О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫)
 cbuffer CustomData : register(b1)
 {
     float4 colorTint;

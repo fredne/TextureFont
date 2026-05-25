@@ -22,10 +22,9 @@ LRESULT CALLBACK GlobalWndProc(HWND h, UINT m, WPARAM w, LPARAM l)
     if (m == WM_DESTROY) PostQuitMessage(0);
     if (m == WM_CHAR)
     {
-        const wchar_t key = static_cast<wchar_t>(w);
         TextRenderer* tc = TextBoxManager::Get().focus;
         if(tc)
-            tc->InputText(key);
+            tc->InputText(static_cast<wchar_t>(w));
 
     }
     if (m == WM_MOUSEMOVE)
@@ -76,21 +75,23 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
     quadMesh->Create(&gEngine.gfx, vQuad);
 
     // Texture
-    Texture* tex = new Texture();
-    tex->Load(gEngine.gfx.Device, L"textfont.png");
-    tex->CreateSampler(gEngine.gfx.Device);
+    Texture* fontTex = new Texture();
+    fontTex->Load(gEngine.gfx.Device, L"textfont.png");
+    fontTex->CreateSampler(gEngine.gfx.Device);
 
     // Material
     Material* texMat = new Material();
     texMat->SetShaderSet(&texShaders);
-    texMat->AddTexture(tex);
+    texMat->AddTexture(fontTex);
 
     // Font
-    Font* font = new Font(tex->width, tex->height);
+    Font* font = new Font(fontTex->width, fontTex->height);
 
     Material* fontMat = new Material();
     fontMat->SetShaderSet(&fontShader);
-    fontMat->AddTexture(tex);
+    fontMat->AddTexture(fontTex);
+    fontMat->AddConstantData<XMFLOAT4>({ 0.5f, 0.5f, 0.5f, 1 });
+    fontMat->constantBuffers.push_back(nullptr);
 
     // FontMesh
     FontMesh::font = new FontMesh();
@@ -131,7 +132,7 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
     texShaders.Release();
     fontShader.Release();
 
-    delete tex;
+    delete fontTex;
 
     delete quadMesh;
     delete fontMesh1;

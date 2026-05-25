@@ -53,7 +53,8 @@ public:
         for (auto obj : world) obj->Input();
     }
 
-    void Update() {
+    void Update() 
+    {
         float dt = timer.GetDelta();
         TextBoxManager::Get().Update(&win);
         for (auto obj : world) obj->Update(dt, &gfx);
@@ -82,7 +83,6 @@ public:
             }
             else {
                 Input();
-                //Font::font->UpdateMesh(&gfx);
                 Update();
                 Render();
             }

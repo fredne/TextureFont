@@ -11,15 +11,14 @@ class TextBoxManager
 public:
 	bool prevL = false;
 	bool curL = false;
-	std::vector<TextRenderer*> textBoxList;
 	TextRenderer* focus;
+	std::vector<TextRenderer*> textBoxList;
 
 	static TextBoxManager& Get()
 	{
 		static TextBoxManager instance;
 		return instance;
 	}
-
 
 	void Update(WindowContext* win)
 	{
@@ -48,11 +47,7 @@ public:
 					printf("The focus TextBox Changed\n");
 				}
 			}
-
 		}
-
-
 	}
-
 };
 

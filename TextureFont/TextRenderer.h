@@ -16,7 +16,7 @@ class FontMesh;
 		Font* font;
 		FontMesh* fontMesh;
 		std::vector<Text> textList;
-		bool shouldUpdate;
+		bool shouldUpdateMesh;
 		bool focused;
 		Align alignX;
 		Align alignY;

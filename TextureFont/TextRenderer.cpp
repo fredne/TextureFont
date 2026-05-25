@@ -8,7 +8,7 @@
 TextRenderer::TextRenderer(FontMesh* fontMesh, Material* mat, Font* font) : 
     MeshRenderer(fontMesh, mat),
     fontMesh(fontMesh),  font(font),
-    focused(false), shouldUpdate(false),
+    focused(false), shouldUpdateMesh(false),
     alignX(Align::Start), alignY(Align::Start)
 {
 
@@ -40,7 +40,7 @@ void TextRenderer::Input()
             InputText(c);
         }
 
-        shouldUpdate = true;
+        shouldUpdateMesh = true;
 
     }
     else if (GetAsyncKeyState(VK_RIGHT) & 0x0001)
@@ -52,7 +52,7 @@ void TextRenderer::Input()
             InputText(c);
         }
 
-        shouldUpdate = true;
+        shouldUpdateMesh = true;
 
     }
     else if (GetAsyncKeyState(VK_UP) & 0x0001)
@@ -64,7 +64,7 @@ void TextRenderer::Input()
             InputText(c);
         }
 
-        shouldUpdate = true;
+        shouldUpdateMesh = true;
 
     }
     else if (GetAsyncKeyState(VK_DOWN) & 0x0001)
@@ -76,7 +76,7 @@ void TextRenderer::Input()
             InputText(c);
         }
 
-        shouldUpdate = true;
+        shouldUpdateMesh = true;
 
     }
 
@@ -85,19 +85,19 @@ void TextRenderer::Input()
     {
         alignX = Align::Start;
         alignY = Align::Start;
-        shouldUpdate = true;
+        shouldUpdateMesh = true;
     }
     else if (GetAsyncKeyState(VK_F2) & 0x0001)
     {
         alignX = Align::Center;
         alignY = Align::Center;
-        shouldUpdate = true;
+        shouldUpdateMesh = true;
     }
     else if (GetAsyncKeyState(VK_F3) & 0x0001)
     {
         alignX = Align::End;
         alignY = Align::End;
-        shouldUpdate = true;
+        shouldUpdateMesh = true;
     }
 
     // F! -> 콘솔 입력
@@ -115,7 +115,7 @@ void TextRenderer::Input()
             InputText(c);
         }
 
-        shouldUpdate = true;
+        shouldUpdateMesh = true;
 
     }
 
@@ -128,7 +128,7 @@ void TextRenderer::InputText(const wchar_t& c)
         if (!textList.empty())
         {
             textList.pop_back();
-            shouldUpdate = true;
+            shouldUpdateMesh = true;
         }
     }
     else
@@ -137,7 +137,7 @@ void TextRenderer::InputText(const wchar_t& c)
         if (text.text != static_cast<wchar_t>(std::string::npos))
         {
             textList.push_back(text);
-            shouldUpdate = true;
+            shouldUpdateMesh = true;
         }
     }
 }
@@ -170,10 +170,10 @@ void TextRenderer::Update(float dt)
 
 void TextRenderer::Render(GraphicsContext* gfx)
 {
-    if (shouldUpdate)
+    if (shouldUpdateMesh)
     {
         fontMesh->UpdateMesh(gfx, textList, alignX, alignY);
-        shouldUpdate = false;
+        shouldUpdateMesh = false;
     }
 
     MeshRenderer::Render(gfx);
