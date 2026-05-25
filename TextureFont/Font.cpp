@@ -25,6 +25,7 @@ Text Font::GetText(const wchar_t& c)
     r.text = std::wstring::npos;
     int idx = -1;
 
+    // std::isdigit();
     if (std::iswdigit(c))
     {
         idx = c - L'0';
@@ -50,10 +51,6 @@ Text Font::GetText(const wchar_t& c)
 
     }
     else if (c == L' ')
-    {
-        r.text = c;
-    }
-    else if (c == VK_BACK)
     {
         r.text = c;
     }

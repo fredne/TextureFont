@@ -282,7 +282,8 @@ public:
     }
 
     //�⺻ ���÷� ���� ���� (�⺻���� �ε巯�� Linear ���)
-    void CreateSampler(ID3D11Device* device) {
+    void CreateSampler(ID3D11Device* device) 
+    {
         D3D11_SAMPLER_DESC desc = {};
         desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // [�Ӽ�] �ε巯�� Ȯ��/���
         desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;    // [�Ӽ�] U�� �ݺ�

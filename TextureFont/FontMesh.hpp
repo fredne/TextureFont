@@ -1,6 +1,7 @@
 #pragma once
 #include "Framework.hpp"
 #include "Mesh.hpp"
+#include "TextRenderer.h"
 
 class FontMesh : public Mesh
 {
@@ -24,18 +25,20 @@ public:
 
     }
 
-    void UpdateMesh(GraphicsContext* gfx, const std::vector<Text>& textList)
+    void UpdateMesh(GraphicsContext* gfx, const std::vector<Text>& textList, Align x, Align y)
     {
         if (!vBuffer) return;
 
         // 문자 리스트에 따라 사각형 생성
         std::vector<Vertex> vQuad;
+        float offsetX = textList.size() * 0.5f * (int)x;
+        float offsetY = 0.5f * (int)y;
         for (uint32_t i = 0; i < (uint32_t)textList.size(); ++i)
         {
-            float vLeft = i;
-            float vtop = 1;
+            float vLeft = i - offsetX;
+            float vtop = 1 + offsetY;
             float vRight = vLeft + 1;
-            float vBottom = vtop - 1.5f;
+            float vBottom = vtop - 1;
 
             const Text& text = textList[i];
             float rRight = text.left + text.width;

@@ -3,10 +3,13 @@
 #include "FontMesh.hpp"
 #include <iostream>
 #include "Font.h"
+#include <array>
 
 TextRenderer::TextRenderer(FontMesh* fontMesh, Material* mat, Font* font) : 
     MeshRenderer(fontMesh, mat),
-    fontMesh(fontMesh), shouldUpdate(false), font(font)
+    fontMesh(fontMesh),  font(font),
+    focused(false), shouldUpdate(false),
+    alignX(Align::Start), alignY(Align::Start)
 {
 
 }
@@ -21,11 +24,13 @@ void TextRenderer::Start(GraphicsContext* gfx)
         InputText(c);
     }
 
-    fontMesh->UpdateMesh(gfx, textList);
+    fontMesh->UpdateMesh(gfx, textList, alignX, alignY);
 }
 
 void TextRenderer::Input()
 {
+    if (not focused) return;
+
     if (GetAsyncKeyState(VK_LEFT) & 0x0001)
     {
         textList.clear();
@@ -38,7 +43,7 @@ void TextRenderer::Input()
         shouldUpdate = true;
 
     }
-    if (GetAsyncKeyState(VK_RIGHT) & 0x0001)
+    else if (GetAsyncKeyState(VK_RIGHT) & 0x0001)
     {
         textList.clear();
         std::wstring s = L"ghijklmnopqr";
@@ -50,7 +55,7 @@ void TextRenderer::Input()
         shouldUpdate = true;
 
     }
-    if (GetAsyncKeyState(VK_UP) & 0x0001)
+    else if (GetAsyncKeyState(VK_UP) & 0x0001)
     {
         textList.clear();
         std::wstring s = L"stuvwcyz";
@@ -62,7 +67,7 @@ void TextRenderer::Input()
         shouldUpdate = true;
 
     }
-    if (GetAsyncKeyState(VK_DOWN) & 0x0001)
+    else if (GetAsyncKeyState(VK_DOWN) & 0x0001)
     {
         textList.clear();
         std::wstring s = L"0123456789";
@@ -75,8 +80,28 @@ void TextRenderer::Input()
 
     }
 
-    // Tab -> 콘솔 입력
-    if (GetAsyncKeyState(VK_TAB) & 0x0001)
+    // Align
+    if (GetAsyncKeyState(VK_F1) & 0x0001)
+    {
+        alignX = Align::Start;
+        alignY = Align::Start;
+        shouldUpdate = true;
+    }
+    else if (GetAsyncKeyState(VK_F2) & 0x0001)
+    {
+        alignX = Align::Center;
+        alignY = Align::Center;
+        shouldUpdate = true;
+    }
+    else if (GetAsyncKeyState(VK_F3) & 0x0001)
+    {
+        alignX = Align::End;
+        alignY = Align::End;
+        shouldUpdate = true;
+    }
+
+    // F! -> 콘솔 입력
+    if (GetAsyncKeyState(VK_F4) & 0x0001)
     {
         std::wstring str;
         std::wcout << "Enter your name: ";
@@ -94,8 +119,11 @@ void TextRenderer::Input()
 
     }
 
-    //Backspace -> 문자 제거
-    if (GetAsyncKeyState(VK_BACK) & 0x0001)
+}
+
+void TextRenderer::InputText(const wchar_t& c)
+{
+    if (c == VK_BACK)
     {
         if (!textList.empty())
         {
@@ -103,18 +131,35 @@ void TextRenderer::Input()
             shouldUpdate = true;
         }
     }
-
+    else
+    {
+        Text text = font->GetText(c);
+        if (text.text != static_cast<wchar_t>(std::string::npos))
+        {
+            textList.push_back(text);
+            shouldUpdate = true;
+        }
+    }
 }
 
-void TextRenderer::InputText(const wchar_t& c)
+std::array<float, 4> TextRenderer::GetTextBoxToScreen()
 {
-    Text text = font->GetText(c);
-    if (text.text != static_cast<wchar_t>(std::string::npos) && text.text != VK_BACK)
+    float textScaleX = pOwner->scale.x * textList.size();
+    float textScaleY = pOwner->scale.y * 1;
+    float left = pOwner->pos.x;
+    float top = -(pOwner->pos.y + textScaleY);
+    float right = left + textScaleX;
+    float bottom = -pOwner->pos.y;
+    float offsetX = (float)alignX * textScaleX * 0.5f;
+    float offsetY = (float)alignY * textScaleY * 0.5f;
+
+    std::array<float, 4> rect =
     {
-        textList.push_back(text);
-        shouldUpdate = true;
-    }
-    
+        left - offsetX, top - offsetY, 
+        right - offsetX, bottom - offsetY
+    };
+
+    return rect;
 }
 
 
@@ -127,7 +172,7 @@ void TextRenderer::Render(GraphicsContext* gfx)
 {
     if (shouldUpdate)
     {
-        fontMesh->UpdateMesh(gfx, textList);
+        fontMesh->UpdateMesh(gfx, textList, alignX, alignY);
         shouldUpdate = false;
     }
 

@@ -2,7 +2,7 @@
 #include "Framework.hpp"
 #include "GraphicsContext.hpp"
 
-// Àü¹æ ¼±¾ð: "ÀÚ¼¼ÇÑ °Ç ³ªÁß¿¡ ¾Ë·ÁÁÙ°Ô, ÀÏ´Ü ÀÌ·± Å¬·¡½º°¡ ÀÖ¾î"
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: "ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½Ë·ï¿½ï¿½Ù°ï¿½, ï¿½Ï´ï¿½ ï¿½Ì·ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½"
 class GameObject;
 
 class Component 

@@ -4,6 +4,7 @@
 #include "Timer.hpp"
 #include "ObjectBase.hpp"
 #include "FontMesh.hpp"
+#include "TextBoxManager.h"
 
 class GameLoop {
 private:
@@ -54,6 +55,7 @@ public:
 
     void Update() {
         float dt = timer.GetDelta();
+        TextBoxManager::Get().Update(&win);
         for (auto obj : world) obj->Update(dt, &gfx);
     }
 

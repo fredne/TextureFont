@@ -13,10 +13,12 @@
 #include "Font.h"
 #include "TextBoxManager.h"
 
+POINT mousePos = { };
 // -----------------------------------------------------------------------------
 // [������ �޽��� ó����]
 // -----------------------------------------------------------------------------
-LRESULT CALLBACK GlobalWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
+LRESULT CALLBACK GlobalWndProc(HWND h, UINT m, WPARAM w, LPARAM l) 
+{
     if (m == WM_DESTROY) PostQuitMessage(0);
     if (m == WM_CHAR)
     {
@@ -26,6 +28,12 @@ LRESULT CALLBACK GlobalWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
             tc->InputText(key);
 
     }
+    if (m == WM_MOUSEMOVE)
+    {
+        mousePos.x = LOWORD(l);
+        mousePos.y = HIWORD(l);
+    }
+
     return DefWindowProc(h, m, w, l);
 }
 
@@ -34,6 +42,8 @@ LRESULT CALLBACK GlobalWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
 // -----------------------------------------------------------------------------
 int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS) 
 {
+    SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+
     GameLoop& gEngine = GameLoop::Get();
     gEngine.Initialize(hI, GlobalWndProc);
    
@@ -84,28 +94,35 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
 
     // FontMesh
     FontMesh::font = new FontMesh();
-    FontMesh* fontMesh = FontMesh::font;
-    fontMesh->Create(&gEngine.gfx, vQuad);
+    FontMesh* fontMesh1 = FontMesh::font;
+    fontMesh1->Create(&gEngine.gfx, vQuad);
+
+    FontMesh* fontMesh2 = new FontMesh();
+    fontMesh2->Create(&gEngine.gfx, vQuad);
 
    // Object
-    GameObject* obj = new GameObject(-0.8f, 0.5f, 0);
-    obj->scale.x = 0.1f;
-    obj->scale.y = 0.1f;
-    TextRenderer* textRenderer = new TextRenderer(fontMesh, fontMat, font);
-    TextBoxManager::Get().focus = textRenderer;
-    obj->AddComponent(textRenderer);
-    gEngine.world.push_back(obj);
+    GameObject* textBox1 = new GameObject(0, 0.5f, 0);
+    textBox1->scale.x = 0.1f;
+    textBox1->scale.y = 0.1f;
+    TextRenderer* textRenderer1 = new TextRenderer(fontMesh1, fontMat, font);
+    textBox1->AddComponent(textRenderer1);
+    gEngine.world.push_back(textBox1);
 
-    //GameObject* obj2 = new GameObject(-0.8f, 0.0f, 0);
-    //obj2->scale.x = 0.1f;
-    //obj2->scale.y = 0.1f;
-    //TextRenderer* textRenderer2 = new TextRenderer(fontMesh, fontMat, font);
-    //TextBoxManager::Get().focus = textRenderer2;
-    //obj2->AddComponent(textRenderer2);
-    //gEngine.world.push_back(obj2);
+    GameObject* textBox2 = new GameObject(0, 0.0f, 0);
+    textBox2->scale.x = 0.1f;
+    textBox2->scale.y = 0.1f;
+    TextRenderer* textRenderer2 = new TextRenderer(fontMesh2, fontMat, font);
+    TextBoxManager::Get().focus = textRenderer2;
+    textBox2->AddComponent(textRenderer2);
+    gEngine.world.push_back(textBox2);
+
+    TextBoxManager& tbManager = TextBoxManager::Get();
+    tbManager.textBoxList.push_back(textRenderer1);
+    tbManager.textBoxList.push_back(textRenderer2);
+    tbManager.focus = textRenderer1;
+    tbManager.focus->focused = true;
 
     gEngine.Run();
-
 
     // Delete
     delete texMat;
@@ -117,7 +134,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int nS)
     delete tex;
 
     delete quadMesh;
-    delete fontMesh;
+    delete fontMesh1;
+    delete fontMesh2;
 
     delete font;
 

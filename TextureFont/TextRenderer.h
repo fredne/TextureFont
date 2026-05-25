@@ -2,18 +2,24 @@
 #include "ObjectBase.hpp"
 #include "MeshRenderer.hpp"	
 
+enum class Align
+{
+	Start, Center, End
+};
+
 class Font;
 class FontMesh;
 
 	class TextRenderer : public MeshRenderer
 	{
-	private:
+	public:
 		Font* font;
 		FontMesh* fontMesh;
 		std::vector<Text> textList;
 		bool shouldUpdate;
-
-	public:
+		bool focused;
+		Align alignX;
+		Align alignY;
 
 		TextRenderer(FontMesh* fontMesh, Material* fontMat, Font* font);
 
@@ -24,6 +30,9 @@ class FontMesh;
 		void Render(GraphicsContext* gfx) override;
 
 		void InputText(const wchar_t& key);
+
+		// return ltrb
+		std::array<float, 4> GetTextBoxToScreen();
 
 
 	};
